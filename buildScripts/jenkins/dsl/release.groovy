@@ -1,10 +1,10 @@
-def NAME = "kong"
+def NAME = "memsql-base-automation-image-builder"
 def EMAIL = "_devmicrocosm@kenshoo.com"
 def JOB_NAME = "${NAME}-release"
 def BRANCH_NAME = "master"
 
 job(JOB_NAME) {
-    label("microcosm-centos7-ecr")
+    label("microcosm-ubuntu-base")
 
     logRotator(10,10)
     concurrentBuild(true)
@@ -55,23 +55,13 @@ job(JOB_NAME) {
 
     steps {
         shell("""
-          virtualenv -p python3.7 venv
-          source venv/bin/activate
-          pip install -r requirements.txt --extra-index-url="https://\${MICROSERVICES_ARTIFACTORY_USER}:\${MICROSERVICES_ARTIFACTORY_PASSWORD}@artifactory.kenshoo-lab.com/artifactory/api/pypi/PyPI-releaes/simple/" --trusted-host artifactory.kenshoo-lab.com
-          sudo yum install lua-devel-5.1.4-15.el7.x86_64 -y
-          wget https://luarocks.org/releases/luarocks-3.7.0.tar.gz --no-check-certificate
-          tar zxpf luarocks-3.7.0.tar.gz
-          cd luarocks-3.7.0
-          ./configure && make && sudo make install
-          sudo luarocks install luasocket
-          cd ..
-          invoke clean-all-dockers clean test
-          invoke create-build --tag \${BUILD_NUMBER} --ecr
+          make
+          docker build -t kenshoo-docker.jfrog.io/TEMP-FOR-TESTING-ks-db-memsql-76-cluster-in-a-box-base -f Dockerfile-ciab . && echo "Successfully built base image"
+          docker push kenshoo-docker.jfrog.io/TEMP-FOR-TESTING-ks-db-memsql-76-cluster-in-a-box-base && echo "Successfully pushed image"
       """)
     }
 
     publishers {
-
 
         extendedEmail {
             recipientList("${EMAIL}")
@@ -100,5 +90,6 @@ job(JOB_NAME) {
                 }
             }
         }
+
     }
 }
