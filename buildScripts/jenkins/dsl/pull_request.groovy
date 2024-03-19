@@ -49,6 +49,8 @@ job(JOB_NAME) {
         sshAgent('kgithub-build-jenkins-microcosm-key')
         credentialsBinding {
             usernamePassword('MICROSERVICES_ARTIFACTORY_USER', 'MICROSERVICES_ARTIFACTORY_PASSWORD', 'jcasc_deployer-microcosm')
+            string('DOCKERHUB_TOKEN_ENV', 'DOCKERHUB_TOKEN')
+            string('DOCKER_ARTIFACTORY_TOKEN_ENV', 'DOCKER_ARTIFACTORY_TOKEN')
         }
     }
 
@@ -56,6 +58,23 @@ job(JOB_NAME) {
         githubPullRequest {
             orgWhitelist('Kenshoo')
             useGitHubHooks()
+        }
+    }
+
+    steps {
+        configFileBuildStep {
+            managedFiles {
+                configFile {
+                    fileId('pip-conf-microcosm')
+                    replaceTokens(true)
+                    targetLocation("/home/ubuntu/.config/pip/pip.conf")
+                }
+                configFile {
+                    fileId('microcosm-docker-config')
+                    replaceTokens(true)
+                    targetLocation("/home/ubuntu/.docker/config.json")
+                }
+            }
         }
     }
 
