@@ -56,6 +56,23 @@ job(JOB_NAME) {
     }
 
     steps {
+        configFileBuildStep {
+            managedFiles {
+                configFile {
+                    fileId('pip-conf-microcosm')
+                    replaceTokens(true)
+                    targetLocation("/home/ubuntu/.config/pip/pip.conf")
+                }
+                configFile {
+                    fileId('microcosm-docker-config')
+                    replaceTokens(true)
+                    targetLocation("/home/ubuntu/.docker/config.json")
+                }
+            }
+        }
+    }
+
+    steps {
         shell("""
           make
           docker build -t 668139184987.dkr.ecr.us-east-1.amazonaws.com/ks-db-memsql-cluster-in-a-box-base-guyh-8:8.1.31 -f Dockerfile-ciab . && echo "Successfully built base image"
