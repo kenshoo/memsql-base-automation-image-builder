@@ -50,6 +50,8 @@ job(JOB_NAME) {
         sshAgent('kgithub-build-jenkins-microcosm-key')
         credentialsBinding {
             usernamePassword('MICROSERVICES_ARTIFACTORY_USER', 'MICROSERVICES_ARTIFACTORY_PASSWORD', 'jcasc_deployer-microcosm')
+            string('DOCKERHUB_TOKEN_ENV', 'DOCKERHUB_TOKEN')
+            string('DOCKER_ARTIFACTORY_TOKEN_ENV', 'DOCKER_ARTIFACTORY_TOKEN')
         }
     }
 
